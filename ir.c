@@ -14,10 +14,7 @@ void IR_Initialize ( void )
 
 void IR_Tasks ( void )
 {
-
-    /* Check the application's current state. */
-    switch ( irData.state )
-    {
+    switch ( irData.state ) {
         /* Application's initial state. */
         case IR_STATE_INIT:
         {
@@ -49,32 +46,23 @@ void IR_Tasks ( void )
         }
         case IR_STATE_SERVICE_TASKS_1:
         {
-            sendThroughQueue('~', uartData.irthread); // 0
-            sendThroughQueue('S', uartData.irthread); // 1
-            sendThroughQueue('I', uartData.irthread); // 2
-            sendThroughQueue('I', uartData.irthread); // 3
-            sendThroughQueue(irData.convertedValue, uartData.irthread); // 4
-            sendThroughQueue(irData.convertedValue, uartData.irthread); // 5
-            sendThroughQueue(irData.convertedValue, uartData.irthread); // 6
-            sendThroughQueue('0', uartData.irthread); // 7
-            sendThroughQueue('0', uartData.irthread); // 8
-            sendThroughQueue('0', uartData.irthread); // 9
-            sendThroughQueue('0', uartData.irthread); // 10
-            sendThroughQueue('*', uartData.irthread); // 11
+//            sendThroughQueue('~', uartData.irthread); // 0
+//            sendThroughQueue('S', uartData.irthread); // 1
+//            sendThroughQueue('I', uartData.irthread); // 2
+//            sendThroughQueue('I', uartData.irthread); // 3
+//            sendThroughQueue(irData.convertedValue, uartData.irthread); // 4
+//            sendThroughQueue(irData.convertedValue, uartData.irthread); // 5
+//            sendThroughQueue(irData.convertedValue, uartData.irthread); // 6
+//            sendThroughQueue('0', uartData.irthread); // 7
+//            sendThroughQueue('0', uartData.irthread); // 8
+//            sendThroughQueue('0', uartData.irthread); // 9
+//            sendThroughQueue('0', uartData.irthread); // 10
+//            sendThroughQueue('*', uartData.irthread); // 11
 
 			irData.state = IR_STATE_SERVICE_TASKS;
             break;
         }
-
-        /* TODO: implement your application state machine.*/
         
-
-        /* The default state should never be executed. */
-        default:
-        {
-            /* TODO: Handle error in application's state machine. */
-            break;
-        }
     }
 }
 

@@ -19,7 +19,7 @@ extern "C" {
     void dbgOutputVal (unsigned char outVal);
     void dbgOutputLoc(unsigned char outVal);
     void sendThroughQueue(char charToSend, QueueHandle_t test);
-
+    void createMessage(QueueHandle_t test, char a,char b,char c,char d,char e,char f,char g, char h);
 
 #ifdef __cplusplus
 }

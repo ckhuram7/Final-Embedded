@@ -4,6 +4,7 @@ void timerCallback(TimerHandle_t myTimer)
 {
     // Make call to the PID algorithm for correction
     motorsData.timerCount = motorsData.timerCount + 1;
+    updateSensorData();
     //pidAdjustment();
 }
 

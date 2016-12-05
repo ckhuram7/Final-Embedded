@@ -18,6 +18,22 @@ void sendThroughQueue(char charToSend, QueueHandle_t test)
     dbgOutputVal(charToSend);
 }
 
+void createMessage(QueueHandle_t test, char a,char b,char c,char d,char e,char f,char g, char h)
+{
+    sendThroughQueue('~',test);
+    sendThroughQueue(a,test);
+    sendThroughQueue(b,test);
+    sendThroughQueue(c,test);
+    sendThroughQueue(d,test);
+    sendThroughQueue(e,test);
+    sendThroughQueue(f,test);
+    sendThroughQueue(g,test);
+    sendThroughQueue(h,test);
+    sendThroughQueue('-',test);
+    sendThroughQueue('/',test);
+    sendThroughQueue('*',test);
+    
+}
 /* *****************************************************************************
  End of File
  */

@@ -24,6 +24,7 @@ typedef struct {
     uint16_t stopValue;  // Pulse Width Modulation Value to Stop
     uint16_t maxValue;   // Pulse Width Modulation Value to Move
     uint16_t turnValue;  // Pulse Width Modulation Value to Turn
+    uint16_t pwmValue;
 } motorValues;
 
 typedef enum
@@ -41,10 +42,20 @@ typedef enum
 
 } MOTOR_STATES;
 
+typedef enum
+{
+    driveOutputHigh,
+    setToInput,        
+    collectData,
+    checkEmergency,
+    TransmitData,
+} IR_Line_STATES;
+
 typedef struct
 {
     /* The application's current state */
     MOTOR_STATES state;
+    IR_Line_STATES irstate;
     QueueHandle_t myQueue;
     //TimerHandle_t myTimer;  // Creates a Timer for Motor Control
     /* TODO: Define any additional data used by the application. */
@@ -53,14 +64,25 @@ typedef struct
     int timerCount;
     char direction;
     uint8_t data; //direction data
-    
+    char irRawData;
+    char irData;
     motorValues leftMotor;
     motorValues rightMotor;
+    uint16_t pinEight;
+    uint16_t pinSeven;
     
     
 } MOTOR_DATA;
 //this is the global struct to add to motor queue
 MOTOR_DATA motorsData;
+
+void updateSensorData();
+void correctIR();
+void readSensorPins();
+void setSensorPinsInput();
+void setSensorPinsHigh();
+void setSensorPinsToOutput();
+
 
 void initalizeOCandMotors();
 void initializeMotorValues (motorValues* motor);
@@ -71,11 +93,12 @@ void incrementRightMotor();
 void LeftMotorControl(bool movement);
 void RightMotorControl(bool movement);
 void stopmotor(void);
+void timedstop();
 void moveright(void);
 void moveleft(void);
 void moveforward(void);
 void moveback(void);
-
+void runmotors();
 void MOTOR_Initialize ( void );
 void MOTOR_Tasks( void );
 
