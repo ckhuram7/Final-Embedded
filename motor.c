@@ -199,11 +199,11 @@ void runmotors()
     {
         timedStop();
     }
-//    else if(motorsData.direction == 'I')
-//    {
-//        createMessage(uartData.irthread,'I','S',irData.convertedValue,'0','0','0','0','0');
-//        motorsData.direction == 'A';
-//    }
+    else if(motorsData.direction == 'I')
+    {
+        createMessage(uartData.irthread,'I','S',irData.convertedValue,'0','0','0','0','0');
+        motorsData.direction == 'A';
+    }
 }
 void initializeMotorValues (motorValues* motor)
 {

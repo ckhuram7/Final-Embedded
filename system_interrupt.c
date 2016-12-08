@@ -61,11 +61,9 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include <xc.h>
 #include <sys/attribs.h>
-#include "mainalg.h"
+#include "ir.h"
 #include "uart.h"
 #include "motor.h"
-#include "ir.h"
-#include "rgb.h"
 #include "system_definitions.h"
 
 
@@ -93,18 +91,27 @@ void IntHandlerDrvAdc(void)
 }
 
 
-
-
-    
 void IntHandlerDrvTmrInstance0(void)
 {
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_2);
 }
 
+void IntHandlerExternalInterruptInstance0(void)
+{
+    // Triggered by pin 7 for Right Encoder Value
+    incrementRightMotor();
+    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_EXTERNAL_1);
+}
+void IntHandlerExternalInterruptInstance1(void)
+{
+    // Triggered by pin 11 for Left Encoder Value
+    incrementLeftMotor();
+    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_EXTERNAL_2);
+}
 
 void IntHandlerDrvUsartInstance0()
 {
-    dbgOutputVal ('I');
+    //dbgOutputVal ('I');
     if (PLIB_INT_SourceFlagGet(INT_ID_0, INT_SOURCE_USART_1_TRANSMIT))//while(!uxQueueMessagesWaitingFromISR(uartData.myQueue) == 0)
     {
         while(!uxQueueMessagesWaitingFromISR(uartData.myQueue) == 0)
@@ -112,9 +119,9 @@ void IntHandlerDrvUsartInstance0()
             if(PLIB_USART_TransmitterIsEmpty(USART_ID_1))
             {
 			   xQueueReceiveFromISR(uartData.myQueue,&receivedChar,NULL);
-               dbgOutputVal ('3'); 
+               //dbgOutputVal ('3'); 
                PLIB_USART_TransmitterByteSend(USART_ID_1, receivedChar);
-               dbgOutputVal (receivedChar);
+               //dbgOutputVal (receivedChar);
             }
         }    
     }
@@ -125,6 +132,8 @@ void IntHandlerDrvUsartInstance0()
             PLIB_INT_SourceDisable(INT_ID_0, INT_SOURCE_USART_1_RECEIVE);
             recChar = PLIB_USART_ReceiverByteReceive(USART_ID_1);
             dbgOutputVal (recChar);
+            motorsData.direction = recChar;
+            xQueueSendFromISR(motorsData.myQueue,&recChar,NULL);
         }
     }
    //PLIB_INT_SourceDisable(INT_ID_0, INT_SOURCE_USART_1_TRANSMIT);
@@ -138,17 +147,6 @@ void IntHandlerDrvUsartInstance0()
     //DRV_USART_TasksReceive(sysObj.drvUsart0);
     //DRV_USART_TasksError(sysObj.drvUsart0);
 }
- 
- 
- 
-
- 
-
- 
-
- 
-
- 
 
  
  
